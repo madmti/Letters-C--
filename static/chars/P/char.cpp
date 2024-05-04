@@ -67,3 +67,4 @@ void Char_P::changeMovementMode() {
     movementMode = !movementMode;
     showScope();
 };
+

@@ -20,8 +20,6 @@ public:
     void showScope();
     void descope();
     void changeMovementMode();
-
-
 };
 
 #endif

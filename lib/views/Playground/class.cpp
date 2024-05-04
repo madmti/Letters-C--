@@ -1,6 +1,6 @@
 #include "class.hpp"
 
-Playground::Playground(std::string _id) : View(_id), chars{ new Char_P(2, 5, true), new Char_C(5, 5, true), new Char_X(1, 1, true), new Char_D(3, 3, false) } {
+Playground::Playground(std::string _id) : View(_id), all_chars{ new Char_P(2, 5, true), new Char_C(5, 5, true), new Char_X(1, 1, true), new Char_D(3, 3, false) } {
     cameraMode = true;
     w = 0;
     clock = 0;
@@ -17,18 +17,32 @@ Playground::Playground(std::string _id) : View(_id), chars{ new Char_P(2, 5, tru
         sf::Keyboard::F
     };
     getMap();
-    for (int i = 0; i < chars.size(); i++) {
-        chars.at(i)->setMaps(&map, &scope_map);
-        chars.at(i)->place();
-    };
+    getPlayable();
+    getConfig();
 };
 
 Playground::~Playground() {
-    int n_chars = chars.size();
+    int n_chars = all_chars.size();
     for (int i = 0; i < n_chars; i++) {
-        delete chars.at(i);
+        delete all_chars.at(i);
     };
-    chars.clear();
+    all_chars.clear();
+    notPlayable_chars.clear();
+    playable_chars.clear();
+};
+
+void Playground::getConfig() {
+    for (int i = 0; i < all_chars.size(); i++) {
+        all_chars.at(i)->setMaps(&map, &scope_map);
+        all_chars.at(i)->place();
+    };
+};
+
+void Playground::getPlayable() {
+    for (int i = 0; i < all_chars.size(); i++)
+        if (all_chars.at(i)->isPlayable())
+            playable_chars.push_back(all_chars.at(i));
+        else notPlayable_chars.push_back(all_chars.at(i));
 };
 
 void Playground::getMap() {
@@ -45,10 +59,59 @@ void Playground::getMap() {
 void Playground::display() {
     display_map();
     display_scope();
-    display_player();
+    display_player(notPlayable_chars, false);
+    display_player(playable_chars, true);
     display_control_mode();
+    display_char_select();
     clock = (clock + 1) % 60;
     if (clock % 30 == 0) delta_anim *= -1;
+};
+
+void Playground::display_char_select() {
+    int l_idx = prev_char_idx(w);
+    int r_idx = next_char_idx(w);
+
+    char l_char = playable_chars.at(l_idx)->getP();
+    char act_char = playable_chars.at(w)->getP();
+    char r_char = playable_chars.at(r_idx)->getP();
+
+    sf::Text l_select(l_char, config->theme.FONT);
+    l_select.setCharacterSize(40);
+    l_select.setFillColor(sf::Color::Blue);
+    l_select.setPosition(20, 95);
+
+    sf::Text act_select(act_char, config->theme.FONT);
+    act_select.setCharacterSize(50);
+    act_select.setFillColor(sf::Color::Blue);
+    act_select.setPosition(60, 90);
+
+    sf::Text r_select(r_char, config->theme.FONT);
+    r_select.setCharacterSize(40);
+    r_select.setFillColor(sf::Color::Blue);
+    r_select.setPosition(110, 95);
+
+    sf::Color shade;
+    shade.r = 0;
+    shade.g = 0;
+    shade.b = 0;
+    shade.a = 100;
+
+    sf::Color shade_2;
+    shade_2.b = 255;
+    shade_2.r = 255;
+    shade_2.g = 255;
+    shade_2.a = 200;
+    act_select.setOutlineThickness(4);
+    act_select.setOutlineColor(shade_2);
+
+    sf::RectangleShape back(sf::Vector2f(140, 50));
+    back.setPosition(10, 100);
+    back.setFillColor(shade);
+
+    window->draw(back);
+    window->draw(l_select);
+    window->draw(act_select);
+    window->draw(r_select);
 };
 
 void Playground::display_control_mode() {
@@ -60,7 +123,7 @@ void Playground::display_control_mode() {
     shade.b = 0;
     shade.a = 100;
 
-    sf::RectangleShape back(sf::Vector2f(cameraMode? 500: 450, 50));
+    sf::RectangleShape back(sf::Vector2f(cameraMode ? 500 : 450, 50));
     back.setPosition(10, 10);
     back.setFillColor(shade);
 
@@ -73,23 +136,25 @@ void Playground::display_control_mode() {
     window->draw(label);
 };
 
-void Playground::display_player() {
+void Playground::display_player(std::vector<Character*> char_list, bool playable) {
     int tilex = (config->window.width / camSize.x) - 1;
     int tiley = (config->window.height / camSize.y);
     int size = tilex < tiley ? tilex : tiley;
 
-    for (int i = 0; i < chars.size(); i++) {
-        sf::Text player(chars.at(i)->getP(), config->theme.FONT);
+    for (int i = 0; i < char_list.size(); i++) {
+        Character* actual = char_list.at(i);
+
+        sf::Text player(actual->getP(), config->theme.FONT);
         player.setCharacterSize(size);
         player.setPosition(
-            chars.at(i)->getX() * size + chars.at(i)->getX() + cam.x * size + 8,
-            chars.at(i)->getY() * size + chars.at(i)->getY() + cam.y * size - 10 + delta_anim * 2
+            actual->getX() * size + actual->getX() + cam.x * size + 8,
+            actual->getY() * size + actual->getY() + cam.y * size - 10 + delta_anim * 2
         );
 
-        if (chars.at(i)->getP() == 'D') player.setFillColor(sf::Color::Green);
+        if (!playable) player.setFillColor(sf::Color::Green);
         else player.setFillColor(config->theme.colors.base);
 
-        if (i == w) {
+        if (i == w && playable) {
             sf::Color shade;
             shade.b = 255;
             shade.r = 0;
@@ -176,9 +241,9 @@ ViewRequest Playground::capture(Key k) {
     };
     case sf::Keyboard::Space: {
         if (!cameraMode) {
-            chars.at(w)->changeMovementMode();
+            playable_chars.at(w)->changeMovementMode();
 
-            if (chars.at(w)->onMovementMode()) chars.at(w)->descope();
+            if (playable_chars.at(w)->onMovementMode()) playable_chars.at(w)->descope();
         }
         break;
     }
@@ -186,11 +251,11 @@ ViewRequest Playground::capture(Key k) {
         if (cameraMode) {
             cam.y++;
         }
-        else if (chars.at(w)->onMovementMode()) {
-            chars.at(w)->move(0, -1);
+        else if (playable_chars.at(w)->onMovementMode()) {
+            playable_chars.at(w)->move(0, -1);
         }
         else {
-            chars.at(w)->scope(0, -1);
+            playable_chars.at(w)->scope(0, -1);
         };
         break;
     };
@@ -198,11 +263,11 @@ ViewRequest Playground::capture(Key k) {
         if (cameraMode) {
             cam.y--;
         }
-        else if (chars.at(w)->onMovementMode()) {
-            chars.at(w)->move(0, 1);
+        else if (playable_chars.at(w)->onMovementMode()) {
+            playable_chars.at(w)->move(0, 1);
         }
         else {
-            chars.at(w)->scope(0, 1);
+            playable_chars.at(w)->scope(0, 1);
         };
         break;
     };
@@ -210,11 +275,11 @@ ViewRequest Playground::capture(Key k) {
         if (cameraMode) {
             cam.x++;
         }
-        else if (chars.at(w)->onMovementMode()) {
-            chars.at(w)->move(-1, 0);
+        else if (playable_chars.at(w)->onMovementMode()) {
+            playable_chars.at(w)->move(-1, 0);
         }
         else {
-            chars.at(w)->scope(-1, 0);
+            playable_chars.at(w)->scope(-1, 0);
         };
         break;
     };
@@ -222,37 +287,49 @@ ViewRequest Playground::capture(Key k) {
         if (cameraMode) {
             cam.x--;
         }
-        else if (chars.at(w)->onMovementMode()) {
-            chars.at(w)->move(1, 0);
+        else if (playable_chars.at(w)->onMovementMode()) {
+            playable_chars.at(w)->move(1, 0);
         }
         else {
-            chars.at(w)->scope(1, 0);
+            playable_chars.at(w)->scope(1, 0);
         };
         break;
     };
     case sf::Keyboard::Q: {
         if (cameraMode) {
-            camSize.x += 2;
-            camSize.y += 1;
+            camSize.x += 4;
+            camSize.y += 2;
+            cam.x += 2;
+            cam.y += 1;
         }
         else {
-            if (w == 0) w = chars.size() - 1;
-            else w--;
+            w = prev_char_idx(w);
         };
         break;
     };
     case sf::Keyboard::E: {
         if (cameraMode) {
-            if (camSize.x >= 3 && camSize.y >= 2) {
-                camSize.x -= 2;
-                camSize.y -= 1;
+            if (camSize.x >= 5 && camSize.y >= 3) {
+                camSize.x -= 4;
+                camSize.y -= 2;
+                cam.x -= 2;
+                cam.y -= 1;
             }
         }
         else {
-            w = (w + 1) % chars.size();
+            w = next_char_idx(w);
         };
         break;
     };
     };
     return ViewRequest(false);
+};
+
+int Playground::prev_char_idx(int actual) {
+    if (actual == 0) return playable_chars.size() - 1;
+    else return actual - 1;
+};
+
+int Playground::next_char_idx(int actual) {
+    return (actual + 1) % playable_chars.size();
 };
