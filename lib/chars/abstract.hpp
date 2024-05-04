@@ -1,6 +1,6 @@
 #ifndef Character_Abstract_h
 #define Character_Abstract_h
-#include "../../lib/types.hpp"
+#include "../types.hpp"
 #include "../tiles/map.hpp"
 
 class Character {

@@ -1,7 +1,7 @@
 #ifndef Playground_h
 #define Playground_h
 #include "../../types.hpp"
-#include "../../../static/chars/include_chars.hpp"
+#include "../../chars/include_chars.hpp"
 
 class Playground :public View {
 private:
