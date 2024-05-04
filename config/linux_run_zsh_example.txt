@@ -1,0 +1,13 @@
+DATE=$(date +%a-%d-%b-%R)
+g++ main.cpp -o ./build/main -I /usr/include ./lib/types.cpp \
+ ./lib/types.hpp ./lib/win/window.hpp ./lib/win/window.cpp \
+ ./lib/views/MainMenu/class.hpp ./lib/views/MainMenu/class.cpp \
+ ./lib/views/ConfigMenu/class.hpp ./lib/views/ConfigMenu/class.cpp \
+ ./lib/views/Playground/class.hpp ./lib/views/Playground/class.cpp \
+ ./static/chars/abstract.hpp ./static/chars/abstract.cpp ./static/chars/include_chars.hpp \
+ ./static/chars/X/char.hpp ./static/chars/X/char.cpp \
+ ./static/chars/P/char.hpp ./static/chars/P/char.cpp \
+ ./static/chars/C/char.hpp ./static/chars/C/char.cpp \
+ ./static/chars/D/char.hpp ./static/chars/D/char.cpp \
+ -l sfml-graphics -l sfml-window -l sfml-system -l jsoncpp &> ./log/compile.txt
+./build/main &> ./log/binary.txt

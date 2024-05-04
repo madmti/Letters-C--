@@ -1,0 +1,5 @@
+devrun.zsh
+build/
+log/
+config.json
+.vscode/
