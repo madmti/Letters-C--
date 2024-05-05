@@ -31,9 +31,9 @@ void ConfigMenu::display() {
     win.setOutlineThickness(500);
     win.setFillColor(sf::Color::Green);
 
-    window->draw(win);
-    window->draw(title);
-    window->draw(Info);
+    frame.draw(win);
+    frame.draw(title);
+    frame.draw(Info);
 };
 
 ViewRequest ConfigMenu::capture(Key k) {
@@ -44,8 +44,10 @@ ViewRequest ConfigMenu::capture(Key k) {
         select = !select;
     }
     else if (k == sf::Keyboard::Enter) {
+        /*
         window->setSize(sf::Vector2u(config->window.width, config->window.height));
         window->setView(sf::View(sf::FloatRect(sf::Vector2f(config->window.dx, config->window.dy), sf::Vector2f(config->window.width, config->window.height))));
+        */
     }
     else if (k == sf::Keyboard::Up) {
         select

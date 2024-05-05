@@ -1,7 +1,6 @@
 #ifndef ConfigMenu_h
 #define ConfigMenu_h
-
-#include "../../types.hpp"
+#include "../abstract.hpp"
 
 class ConfigMenu :public View {
 private:

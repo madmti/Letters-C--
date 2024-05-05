@@ -1,6 +1,6 @@
 #ifndef MainMenu_h
 #define MainMenu_h
-#include "../../types.hpp"
+#include "../abstract.hpp"
 
 struct Option {
     std::string viewid, text;

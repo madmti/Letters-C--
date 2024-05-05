@@ -8,7 +8,6 @@ MainMenuView::MainMenuView(std::string _id) : View(_id) {
         Option("#myteam", "my team"),
         Option("#configmenu", "configuration")
     };
-
     req_keys = std::vector<Key>{
         sf::Keyboard::W,
         sf::Keyboard::S,
@@ -33,11 +32,11 @@ void MainMenuView::display() {
         txt_opt.setCharacterSize(50);
         txt_opt.setPosition(200, 500 + i * 50);
         txt_opt.setFillColor(config->theme.colors.base);
-        window->draw(txt_opt);
+        frame.draw(txt_opt);
     };
 
-    window->draw(selector);
-    window->draw(title);
+    frame.draw(selector);
+    frame.draw(title);
 };
 
 ViewRequest MainMenuView::capture(Key k) {

@@ -108,10 +108,10 @@ void Playground::display_char_select() {
     back.setPosition(10, 100);
     back.setFillColor(shade);
 
-    window->draw(back);
-    window->draw(l_select);
-    window->draw(act_select);
-    window->draw(r_select);
+    frame.draw(back);
+    frame.draw(l_select);
+    frame.draw(act_select);
+    frame.draw(r_select);
 };
 
 void Playground::display_control_mode() {
@@ -132,8 +132,8 @@ void Playground::display_control_mode() {
     label.setPosition(10, 0);
     label.setFillColor(color);
 
-    window->draw(back);
-    window->draw(label);
+    frame.draw(back);
+    frame.draw(label);
 };
 
 void Playground::display_player(std::vector<Character*> char_list, bool playable) {
@@ -164,7 +164,7 @@ void Playground::display_player(std::vector<Character*> char_list, bool playable
             player.setOutlineColor(shade);
         };
 
-        window->draw(player);
+        frame.draw(player);
     };
 };
 
@@ -203,7 +203,7 @@ void Playground::display_scope() {
             sf::RectangleShape tile(sf::Vector2f(size, size));
             tile.setFillColor(tile_color);
             tile.setPosition(camx * size + camx + cam.x * size, camy * size + camy + cam.y * size);
-            window->draw(tile);
+            frame.draw(tile);
         };
     };
 };
@@ -224,7 +224,7 @@ void Playground::display_map() {
             tile.setOutlineColor(sf::Color::White);
             tile.setOutlineThickness(1);
             tile.setPosition(camx * size + camx + cam.x * size, camy * size + camy + cam.y * size);
-            window->draw(tile);
+            frame.draw(tile);
         };
     };
 };

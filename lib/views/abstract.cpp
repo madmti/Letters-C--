@@ -1,4 +1,14 @@
-#include "./types.hpp"
+#include "abstract.hpp"
+
+/*
+*** View
+*/
+
+View::View(std::string _id) {
+    ID = _id;
+};
+View::View() {};
+View::~View() {};
 
 /*
 *** ViewManager
@@ -41,22 +51,27 @@ void ViewManager::changePage(int _idx) {
 
 void ViewManager::insertView(View* _view) {
     std::string _id = _view->getID();
-    _view->setConfig(win_config, window);
+    _view->setConfig(win_config);
     views.insert_or_assign(_id, _view);
     view_ids.push_back(_id);
     if (hist.empty()) hist.push_back(_id);
 };
 
+void ViewManager::doViewClear() {
+    if (hist.empty()) return;
+
+    View* now = views.at(hist.back());
+
+    now->clear();
+};
+
 void ViewManager::doViewDisplay() {
     if (hist.empty()) return;
 
-    sf::RectangleShape background(sf::Vector2f(win_config->window.width, win_config->window.height));
-    background.setFillColor(win_config->theme.colors.back);
-    background.setPosition(win_config->window.dx, win_config->window.dy);
-    window->draw(background);
-
     View* now = views.at(hist.back());
+
     now->display();
+    window->draw(now->getViewSprite());
 };
 
 void ViewManager::doViewCapture(sf::Event _ev) {

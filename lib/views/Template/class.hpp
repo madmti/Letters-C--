@@ -1,6 +1,6 @@
 #ifndef Template_h
 #define Template_h
-#include "../../types.hpp"
+#include "../abstract.hpp"
 
 class Template:public View {
 private:

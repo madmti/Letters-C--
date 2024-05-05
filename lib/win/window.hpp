@@ -1,7 +1,7 @@
 #ifndef Window_h
 #define Window_h
 
-#include "../types.hpp"
+#include "../views/include_views.hpp"
 
 class Window {
 private:
@@ -24,6 +24,7 @@ private:
 
     /* * * * * * * * * * * * * * * * * DISPLAY * * * * * * * * * * * * * * * */
 
+    void clear();
     void display();
 
     /* * * * * * * * * * * * * * * * * UTILS * * * * * * * * * * * * * * * */

@@ -1,7 +1,4 @@
 #include "window.hpp"
-#include "../views/MainMenu/class.hpp"
-#include "../views/ConfigMenu/class.hpp"
-#include "../views/Playground/class.hpp"
 
 /* * * * * * * * * * * * * * * * * CLASS * * * * * * * * * * * * * * * */
 
@@ -24,7 +21,7 @@ void Window::mainLoop() {
     sf::Uint32 frameRate(16.666);
 
     while (win.isOpen()) {
-        win.clear();
+        clear();
         captureEvents();
         display();
         sf::sleep(sf::milliseconds(frameRate));
@@ -117,9 +114,15 @@ void Window::getViews() {
     view_manager.insertView(new MainMenuView("#mainmenu"));
     view_manager.insertView(new ConfigMenu("#configmenu"));
     view_manager.insertView(new Playground("#playground"));
+
 };
 
 /* * * * * * * * * * * * * * * * * DISPLAY * * * * * * * * * * * * * * * */
+
+void Window::clear() {
+    view_manager.doViewClear();
+    win.clear();
+};
 
 void Window::display() {
     view_manager.doViewDisplay();
