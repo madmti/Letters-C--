@@ -1,7 +1,7 @@
 #ifndef View_h
 #define View_h
 #include "../types.hpp"
-#include "../frames/include_frames.hpp"
+#include "../frames/view/frame.hpp"
 
 class ViewRequest {
 private:

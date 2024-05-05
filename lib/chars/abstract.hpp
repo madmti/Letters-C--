@@ -2,6 +2,7 @@
 #define Character_Abstract_h
 #include "../types.hpp"
 #include "../tiles/map.hpp"
+#include "../frames/char/frame.hpp"
 
 class Character {
 protected:

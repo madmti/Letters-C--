@@ -45,6 +45,8 @@ ViewRequest ConfigMenu::capture(Key k) {
     }
     else if (k == sf::Keyboard::Enter) {
         /*
+        Cambiar ajustes en json y reabrir app
+
         window->setSize(sf::Vector2u(config->window.width, config->window.height));
         window->setView(sf::View(sf::FloatRect(sf::Vector2f(config->window.dx, config->window.dy), sf::Vector2f(config->window.width, config->window.height))));
         */

@@ -1,19 +1,17 @@
-#ifndef Frame_view_h
-#define Frame_view_h
+#ifndef Frame_char_h
+#define Frame_char_h
 #include "../abstract.hpp"
 
-class ViewFrame :public Frame {
+class CharFrame :public Frame {
 private:
 
-
 public:
-    ViewFrame();
-    ~ViewFrame();
+    CharFrame();
+    ~CharFrame();
 
     void draw(sf::RectangleShape _shape);
     void draw(sf::Text _shape);
     void draw(sf::Sprite _shape);
-
 };
 
 #endif
