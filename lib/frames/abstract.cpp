@@ -17,7 +17,6 @@ Frame::Frame() : size{ 0, 0 }, scale{ 1, 1 }, pos{ 0, 0 } {
     valid = false;
 };
 
-void Frame::clear() { frame.clear(); };
 void Frame::display() { frame.display(); };
 
 void Frame::setConfig(sf::Vector2i _pos, sf::Vector2i _size) {

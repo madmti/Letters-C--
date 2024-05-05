@@ -18,7 +18,7 @@ public:
     Frame(sf::Vector2i size);
     Frame();
 
-    void clear();
+    virtual void clear() = 0;
     void display();
     void setConfig(sf::Vector2i pos, sf::Vector2i size);
     void setConfig(sf::Vector2i size);

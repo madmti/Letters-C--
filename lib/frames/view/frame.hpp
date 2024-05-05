@@ -10,6 +10,7 @@ public:
     ViewFrame();
     ~ViewFrame();
 
+    void clear();
     void draw(sf::RectangleShape _shape);
     void draw(sf::Text _shape);
     void draw(sf::Sprite _shape);

@@ -65,24 +65,24 @@ void Playground::getMap() {
     );
     map_frame.setConfig(sf::Vector2i(50, 50), map_frame_size);
     map_frame.setSize(sf::Vector2i(1920, 1080));
+    char_frame.setConfig(sf::Vector2i(0, 0), map_frame_size);
 };
 
 void Playground::clear() {
+    char_frame.clear();
     map_frame.clear();
     frame.clear();
 };
 
 void Playground::display() {
     display_map();
-    /*
-    display_scope();
+    //display_scope();
     display_player(notPlayable_chars, false);
     display_player(playable_chars, true);
+    map_frame.draw(char_frame.getSprite());
+    frame.draw(map_frame.getSprite());
     display_control_mode();
     display_char_select();
-    clock = (clock + 1) % 60;
-    if (clock % 30 == 0) delta_anim *= -1;
-    */
 };
 
 void Playground::display_char_select() {
@@ -112,7 +112,7 @@ void Playground::display_char_select() {
     shade.r = 0;
     shade.g = 0;
     shade.b = 0;
-    shade.a = 100;
+    shade.a = 200;
 
     sf::Color shade_2;
     shade_2.b = 255;
@@ -155,18 +155,14 @@ void Playground::display_control_mode() {
 };
 
 void Playground::display_player(std::vector<Character*> char_list, bool playable) {
-    int tilex = (config->window.width / camSize.x) - 1;
-    int tiley = (config->window.height / camSize.y);
-    int size = tilex < tiley ? tilex : tiley;
-
     for (int i = 0; i < char_list.size(); i++) {
         Character* actual = char_list.at(i);
 
         sf::Text player(actual->getP(), config->theme.FONT);
-        player.setCharacterSize(size);
+        player.setCharacterSize(tile_size.y < tile_size.x ? tile_size.y : tile_size.x);
         player.setPosition(
-            actual->getX() * size + actual->getX() + cam.x * size + 8,
-            actual->getY() * size + actual->getY() + cam.y * size - 10 + delta_anim * 2
+            actual->getX() * (tile_size.x + 1),
+            actual->getY() * (tile_size.y + 1)
         );
 
         if (!playable) player.setFillColor(sf::Color::Green);
@@ -178,11 +174,10 @@ void Playground::display_player(std::vector<Character*> char_list, bool playable
             shade.r = 0;
             shade.g = 0;
             shade.a = 150;
-            player.setOutlineThickness(4);
+            player.setOutlineThickness(2);
             player.setOutlineColor(shade);
         };
-
-        frame.draw(player);
+        char_frame.draw(player);
     };
 };
 
@@ -252,7 +247,6 @@ void Playground::display_map() {
 
         };
     };
-    frame.draw(map_frame.getSprite());
 };
 
 

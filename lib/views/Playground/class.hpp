@@ -18,6 +18,7 @@ private:
     std::vector<Character*> notPlayable_chars;
     std::vector<Character*> playable_chars;
 
+    CharFrame char_frame;
     TileFrame map_frame;
     sf::Vector2i tile_size;
 

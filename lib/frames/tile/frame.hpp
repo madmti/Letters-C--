@@ -14,6 +14,7 @@ public:
     void zoomOut();
     void move(int dx, int dy);
 
+    void clear();
     void draw(sf::RectangleShape _shape);
     void draw(sf::Text _shape);
     void draw(sf::Sprite _shape);

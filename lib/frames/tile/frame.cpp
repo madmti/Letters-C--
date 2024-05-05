@@ -21,6 +21,10 @@ void TileFrame::draw(sf::Sprite _shape) {
     frame.draw(_shape);
 };
 
+void TileFrame::clear() {
+    frame.clear(sf::Color::Black);
+};
+
 void TileFrame::zoomIn() {
     rePos(sf::Vector2i(
         pos.x - (size.x * scale.x * k - size.x * scale.x) / 2,

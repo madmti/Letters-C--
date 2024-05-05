@@ -19,3 +19,7 @@ void ViewFrame::draw(sf::Sprite _shape) {
     if (!valid) return;
     frame.draw(_shape);
 };
+
+void ViewFrame::clear() {
+    frame.clear(sf::Color::Black);
+};
