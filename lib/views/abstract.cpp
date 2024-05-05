@@ -95,7 +95,7 @@ void ViewManager::doViewCapture(sf::Event _ev) {
 */
 
 ViewRequest::ViewRequest(bool valid) { isReqNull = !valid; };
-ViewRequest::ViewRequest(Json::Value _body, std::string _from, std::string _to, bool _local) { body = _body; from = _from; to = _to; local = _local; };
+ViewRequest::ViewRequest(Json::Value _body, std::string _from, std::string _to, bool _local) { body = _body; from = _from; to = _to; local = _local; isReqNull = false; };
 ViewRequest::ViewRequest() {};
 ViewRequest::~ViewRequest() {};
 
