@@ -3,7 +3,11 @@
 /*
 *** View
 */
-
+View::View(std::string _id, Config_type* _config, Texture_config* _textures){
+    ID = _id;
+    config = _config;
+    textures = _textures;
+};
 View::View(std::string _id) {
     ID = _id;
 };
@@ -22,7 +26,7 @@ ViewManager::~ViewManager() {
     if (!view_ids.empty()) for (int i = 0; i < view_ids.size(); i++) delete views[view_ids.at(i)];
 };
 
-void ViewManager::setConfig(Config_type* _win_config, sf::RenderWindow* _window) { win_config = _win_config; window = _window; };
+void ViewManager::setConfig(Config_type* _win_config, Texture_config* _textures, sf::RenderWindow* _window) { win_config = _win_config; textures = _textures; window = _window; };
 
 Key ViewManager::getKeyPress(sf::Event _ev, vectKey _keys) {
     if (_ev.type == sf::Event::KeyPressed) for (int n = _keys.size() - 1; n >= 0; n--) if (_ev.key.code == _keys[n]) return _ev.key.code;
@@ -51,7 +55,7 @@ void ViewManager::changePage(int _idx) {
 
 void ViewManager::insertView(View* _view) {
     std::string _id = _view->getID();
-    _view->setConfig(win_config);
+    _view->setConfig(win_config, textures);
     views.insert_or_assign(_id, _view);
     view_ids.push_back(_id);
     if (hist.empty()) hist.push_back(_id);

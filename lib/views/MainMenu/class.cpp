@@ -15,6 +15,10 @@ MainMenuView::MainMenuView(std::string _id) : View(_id) {
     };
 };
 
+void MainMenuView::clear() {
+    frame.clear();
+};
+
 void MainMenuView::display() {
     sf::Text title("Letters Online", config->theme.FONT);
     title.setCharacterSize(100);

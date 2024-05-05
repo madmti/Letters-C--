@@ -8,6 +8,7 @@ private:
 public:
     ConfigMenu(std::string _id);
     ~ConfigMenu();
+    void clear();
     void display();
     ViewRequest capture(Key _k);
 };

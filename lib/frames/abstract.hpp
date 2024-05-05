@@ -10,10 +10,6 @@ protected:
     sf::RenderTexture frame;
     bool valid;
 
-    sf::RectangleShape formatShape(sf::RectangleShape _shape);
-    sf::Text formatShape(sf::Text _shape);
-    sf::Sprite formatShape(sf::Sprite _shape);
-
     void reSize(sf::Vector2i new_size);
     void rePos(sf::Vector2i new_pos);
 

@@ -4,11 +4,15 @@
 
 Window::Window(bool _debug) {
     debug = _debug;
+    shouldClose = false;
     getConfig();
     getViews();
 };
 
-Window::~Window() {};
+Window::~Window() {
+    delete config;
+    delete textures;
+};
 
 void Window::start() {
     sf::VideoMode win_mode(config->window.width, config->window.height);
@@ -20,7 +24,7 @@ void Window::start() {
 void Window::mainLoop() {
     sf::Uint32 frameRate(16.666);
 
-    while (win.isOpen()) {
+    while (win.isOpen() && !shouldClose) {
         clear();
         captureEvents();
         display();
@@ -39,6 +43,7 @@ void Window::exception(std::string msg) {
     std::cout << "# Error: " << msg << std::endl;
     std::cout << "#=======" << std::endl;
     win.close();
+    shouldClose = true;
 };
 
 /* * * * * * * * * * * * * * * * * CONFIG * * * * * * * * * * * * * * * */
@@ -80,6 +85,7 @@ void Window::getConfig() {
 
     if (!validKeysConfig(_conf)) exception("Config.json has missing or invalid keys/values");
     config = new Config_type();
+    textures = new Texture_config();
 
     int width = _conf["window"]["width"].asInt();
     int height = _conf["window"]["height"].asInt();
@@ -90,7 +96,7 @@ void Window::getConfig() {
 
     std::string font = _conf["theme"]["font"].asString();
     config->theme.set(font);
-    config->theme.FONT.loadFromFile("./static/fonts/" + font + ".ttf");
+    if (!config->theme.FONT.loadFromFile("./static/fonts/" + font + ".ttf")) exception("font does not exist in /static/fonts/<font>.ttf");
 
     sf::Color base;
     base.r = _conf["theme"]["color"]["base"]["r"].asUInt();
@@ -106,14 +112,22 @@ void Window::getConfig() {
     back.a = _conf["theme"]["color"]["back"]["a"].asUInt();
     config->theme.colors.back = back;
 
+    textures->tiles.tile_size = sf::Vector2i(10, 10);
 
-    view_manager.setConfig(config, &win);
+    textures->tiles.tile_mask = sf::IntRect(sf::Vector2i(0, 0), textures->tiles.tile_size);
+
+    if (!textures->tiles.map_floor_0.loadFromFile("./static/textures/tiles/MAP_FLOOR_0.png", textures->tiles.tile_mask))
+        exception("texture map_floor_0.png does not exists in /static/textures/tiles/");
+    if (!textures->tiles.map_wall_0.loadFromFile("./static/textures/tiles/MAP_WALL_0.png", textures->tiles.tile_mask))
+        exception("texture map_wall_0.png does not exists in /static/textures/tiles/");
+
+    view_manager.setConfig(config, textures, &win);
 };
 
 void Window::getViews() {
     view_manager.insertView(new MainMenuView("#mainmenu"));
     view_manager.insertView(new ConfigMenu("#configmenu"));
-    view_manager.insertView(new Playground("#playground"));
+    view_manager.insertView(new Playground("#playground", config, textures));
 
 };
 

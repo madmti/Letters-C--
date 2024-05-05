@@ -17,6 +17,7 @@ private:
 public:
     MainMenuView(std::string _id);
     ~MainMenuView();
+    void clear();
     void display();
     ViewRequest capture(Key _k);
 };

@@ -2,6 +2,7 @@
 #define Playground_h
 #include "../abstract.hpp"
 #include "../../chars/include_chars.hpp"
+#include "../../frames/tile/frame.hpp"
 
 class Playground :public View {
 private:
@@ -17,6 +18,9 @@ private:
     std::vector<Character*> notPlayable_chars;
     std::vector<Character*> playable_chars;
 
+    TileFrame map_frame;
+    sf::Vector2i tile_size;
+
     int clock;
     int delta_anim;
 
@@ -27,7 +31,7 @@ private:
 
 
 public:
-    Playground(std::string _id);
+    Playground(std::string _id, Config_type* _config, Texture_config* _texture);
     ~Playground();
 
     void getMap();
@@ -40,6 +44,8 @@ public:
     void display_player(std::vector<Character*> char_list, bool playable);
     void display_control_mode();
     void display_char_select();
+
+    void clear();
 
     ViewRequest capture(Key _k);
 };

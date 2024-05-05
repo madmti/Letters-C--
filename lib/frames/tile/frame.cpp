@@ -1,21 +1,51 @@
 #include "frame.hpp"
 
-TileFrame::TileFrame() :Frame() {};
+TileFrame::TileFrame() :Frame() {
+    k = 1.2;
+};
 TileFrame::~TileFrame() {};
 
 
+void TileFrame::setSize(sf::Vector2i new_size) { reSize(new_size); };
+
 void TileFrame::draw(sf::RectangleShape _shape) {
     if (!valid) return;
-    sf::RectangleShape shape = formatShape(_shape);
-    frame.draw(shape);
+    frame.draw(_shape);
 };
 void TileFrame::draw(sf::Text _shape) {
     if (!valid) return;
-    sf::Text shape = formatShape(_shape);
-    frame.draw(shape);
+    frame.draw(_shape);
 };
 void TileFrame::draw(sf::Sprite _shape) {
     if (!valid) return;
-    sf::Sprite shape = formatShape(_shape);
-    frame.draw(shape);
+    frame.draw(_shape);
+};
+
+void TileFrame::zoomIn() {
+    rePos(sf::Vector2i(
+        pos.x - (size.x * scale.x * k - size.x * scale.x) / 2,
+        pos.y - (size.y * scale.y * k - size.y * scale.y) / 2
+    ));
+    scale = sf::Vector2f(
+        scale.x * k,
+        scale.y * k
+    );
+
+};
+void TileFrame::zoomOut() {
+    rePos(sf::Vector2i(
+        pos.x + (size.x * scale.x - size.x * scale.x / k) / 2,
+        pos.y + (size.y * scale.y - size.y * scale.y / k) / 2
+    ));
+    scale = sf::Vector2f(
+        scale.x / k,
+        scale.y / k
+    );
+};
+
+void TileFrame::move(int dx, int dy) {
+    rePos(sf::Vector2i(
+        pos.x + dx,
+        pos.y + dy
+    ));
 };

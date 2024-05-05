@@ -13,6 +13,10 @@ ConfigMenu::ConfigMenu(std::string _id) :View(_id) {
     };
 };
 
+void ConfigMenu::clear() {
+    frame.clear();
+};
+
 void ConfigMenu::display() {
     sf::Text title("Configuration", config->theme.FONT);
     title.setCharacterSize(100);

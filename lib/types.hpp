@@ -26,6 +26,17 @@ struct Window_info {
     void set(int _w, int _h, int _dx, int _dy, int _fps) { width = _w; height = _h; dx = _dx; dy = _dy; FPS = _fps; };
 };
 
+struct Tiles_textures {
+    sf::IntRect tile_mask;
+    sf::Vector2i tile_size;
+    sf::Texture map_wall_0;
+    sf::Texture map_floor_0;
+};
+
+struct Texture_config {
+    Tiles_textures tiles;
+};
+
 struct Config_type {
     Window_info window;
     Theme_info theme;

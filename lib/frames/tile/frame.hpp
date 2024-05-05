@@ -4,10 +4,15 @@
 
 class TileFrame :public Frame {
 private:
-
+    float k;
 public:
     TileFrame();
     ~TileFrame();
+
+    void setSize(sf::Vector2i new_size);
+    void zoomIn();
+    void zoomOut();
+    void move(int dx, int dy);
 
     void draw(sf::RectangleShape _shape);
     void draw(sf::Text _shape);

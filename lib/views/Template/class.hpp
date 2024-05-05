@@ -8,6 +8,7 @@ private:
 public:
     Template(std::string _id);
     ~Template();
+    void clear();
     void display();
     ViewRequest capture(Key _k);
 };
