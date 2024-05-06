@@ -11,7 +11,6 @@ Window::Window(bool _debug) {
 
 Window::~Window() {
     delete config;
-    delete textures;
 };
 
 void Window::start() {
@@ -85,7 +84,6 @@ void Window::getConfig() {
 
     if (!validKeysConfig(_conf)) exception("Config.json has missing or invalid keys/values");
     config = new Config_type();
-    textures = new Texture_config();
 
     int width = _conf["window"]["width"].asInt();
     int height = _conf["window"]["height"].asInt();
@@ -112,22 +110,13 @@ void Window::getConfig() {
     back.a = _conf["theme"]["color"]["back"]["a"].asUInt();
     config->theme.colors.back = back;
 
-    textures->tiles.tile_size = sf::Vector2i(10, 10);
-
-    textures->tiles.tile_mask = sf::IntRect(sf::Vector2i(0, 0), textures->tiles.tile_size);
-
-    if (!textures->tiles.map_floor_0.loadFromFile("./static/textures/tiles/MAP_FLOOR_0.png", textures->tiles.tile_mask))
-        exception("texture map_floor_0.png does not exists in /static/textures/tiles/");
-    if (!textures->tiles.map_wall_0.loadFromFile("./static/textures/tiles/MAP_WALL_0.png", textures->tiles.tile_mask))
-        exception("texture map_wall_0.png does not exists in /static/textures/tiles/");
-
-    view_manager.setConfig(config, textures, &win);
+    view_manager.setConfig(config, &win);
 };
 
 void Window::getViews() {
     view_manager.insertView(new MainMenuView("#mainmenu"));
     view_manager.insertView(new ConfigMenu("#configmenu"));
-    view_manager.insertView(new Playground("#playground", config, textures));
+    view_manager.insertView(new Playground("#playground"));
 
 };
 

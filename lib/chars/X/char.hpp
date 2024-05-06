@@ -14,6 +14,7 @@ private:
 
 public:
     Char_X(int _x, int _y, bool playable);
+    Char_X(bool playable);
     ~Char_X();
 
     void scope(int _x, int _y);

@@ -9,6 +9,7 @@ private:
     int range;
 public:
     Char_P(int _x, int _y, bool playable);
+    Char_P(bool playable);
     ~Char_P();
 
     void scope(int _x, int _y);

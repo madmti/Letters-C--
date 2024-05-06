@@ -40,8 +40,8 @@ sf::Sprite CharFrame::transformShapeAnim(sf::Sprite _shape) {
 };
 
 void CharFrame::doClock() {
-    clock = (clock + 1) % 60;
-    if (clock % 30 == 0) deltaAnim *= -1;
+    clock = (clock + 1) % 120;
+    if (clock % 120 == 0) deltaAnim *= -1;
 };
 
 void CharFrame::clear() {
@@ -49,3 +49,4 @@ void CharFrame::clear() {
 };
 
 void CharFrame::setSize(sf::Vector2i new_size) { reSize(new_size); };
+void CharFrame::setPos(sf::Vector2i new_pos) { rePos(new_pos); };

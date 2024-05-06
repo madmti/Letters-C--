@@ -10,6 +10,7 @@ private:
 
 public:
     Char_C(int _x, int _y, bool playable);
+    Char_C(bool playable);
     ~Char_C();
 
     void scope(int _x, int _y);

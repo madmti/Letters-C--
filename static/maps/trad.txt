@@ -1,0 +1,17 @@
+w: Wall
+f: Floor
+v: Void
+b: Spawn Point Blue
+r: Spawn Point Red
+
+---- fomato ---- map 3x3
+* MAP
+- w w w
+- w f w
+- w w w
+* TEXTURE
+w: texture.png
+f: texture.png
+v: texture.png
+b: texture.png
+r: texture.png

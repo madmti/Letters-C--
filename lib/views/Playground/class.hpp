@@ -6,12 +6,7 @@
 
 class Playground :public View {
 private:
-    Matrix2i map;
-    Matrix2i scope_map;
-    sf::Vector2i mapSize{ 32, 18 };
-
-    sf::Vector2f cam{ 0, 0 };
-    sf::Vector2f camSize{ 32, 18 };
+    Map map;
 
     int w;
     std::vector<Character*> all_chars;
@@ -22,9 +17,6 @@ private:
     TileFrame map_frame;
     sf::Vector2i tile_size;
 
-    int clock;
-    int delta_anim;
-
     bool cameraMode;
     
     int next_char_idx(int act);
@@ -32,16 +24,15 @@ private:
 
 
 public:
-    Playground(std::string _id, Config_type* _config, Texture_config* _texture);
+    Playground(std::string _id);
     ~Playground();
 
-    void getMap();
-    void getPlayable();
-    void getConfig();
+    void getMap(std::string map_name);
+    void setupChars();
 
     void display();
     void display_map();
-    void display_scope();
+    void display_scope(int dx, int dy);
     void display_player(std::vector<Character*> char_list, bool playable);
     void display_control_mode();
     void display_char_select();

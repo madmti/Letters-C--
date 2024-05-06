@@ -11,6 +11,7 @@ public:
     ~CharFrame();
 
     void setSize(sf::Vector2i new_size);
+    void setPos(sf::Vector2i new_pos);
 
     void clear();
     void draw(sf::RectangleShape _shape);

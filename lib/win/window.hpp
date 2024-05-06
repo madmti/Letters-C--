@@ -7,7 +7,6 @@ class Window {
 private:
     sf::RenderWindow win;
     Config_type* config;
-    Texture_config* textures;
 
     ViewManager view_manager;
 

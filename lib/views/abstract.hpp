@@ -35,7 +35,6 @@ protected:
     std::string ID;
     vectKey req_keys;
     Config_type* config;
-    Texture_config* textures;
     ViewFrame frame;
 public:
     View(std::string _id);
@@ -49,7 +48,7 @@ public:
     std::string getID() { return ID; };
     vectKey getRequiredKeys() { return req_keys; };
     void setRequiredKeys(vectKey _keys) { req_keys = _keys; };
-    void setConfig(Config_type* _config, Texture_config* _textures) { config = _config; textures = _textures; frame.setConfig(sf::Vector2i(_config->window.dx, _config->window.dy), sf::Vector2i(_config->window.width, _config->window.height)); };
+    void setConfig(Config_type* _config) { config = _config; frame.setConfig(sf::Vector2i(_config->window.dx, _config->window.dy), sf::Vector2i(_config->window.width, _config->window.height)); };
     sf::Sprite getViewSprite() { return frame.getSprite(); };
 };
 
@@ -65,7 +64,6 @@ private:
     ViewRequest request;
 
     Config_type* win_config;
-    Texture_config* textures;
     sf::RenderWindow* window;
 
     bool checkPageID(std::string);
@@ -79,7 +77,7 @@ public:
     ~ViewManager();
 
     Key getKeyPress(sf::Event _ev, vectKey _keys);
-    void setConfig(Config_type* _win_config, Texture_config* _textures, sf::RenderWindow* _window);
+    void setConfig(Config_type* _win_config, sf::RenderWindow* _window);
 
     void insertView(View* _view);
     void doViewDisplay();

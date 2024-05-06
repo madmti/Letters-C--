@@ -12,9 +12,9 @@ protected:
     bool movementMode;
     bool playable;
 
-    Matrix2i* map;
-    Matrix2i* scope_map;
+    Map* map;
 public:
+    Character(char _p, bool _playable) { p = _p; playable = _playable; movementMode = true; };
     Character(int _x, int _y, char _p, bool _playable) { x = _x; y = _y; p = _p; movementMode = true; playable = _playable; };
 
     void move(int x, int y);
@@ -30,8 +30,10 @@ public:
     int getY() { return y; };
     bool isPlayable() { return playable; };
     bool onMovementMode() { return movementMode; };
+    void setPos(int _x, int _y) { x = _x; y = _y; };
+    void setPos(sf::Vector2i pos) { x = pos.x; y = pos.y; };
 
-    void setMaps(Matrix2i* _map, Matrix2i* _scope_map) { map = _map; scope_map = _scope_map; };
+    void setMap(Map* _map) { map = _map; };
 
 };
 

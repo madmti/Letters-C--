@@ -37,6 +37,13 @@ void Frame::setConfig(sf::Vector2i _size) {
     else reSize(_size);
 };
 
+void Frame::scaleFrame(float k) {
+    scale = sf::Vector2f(
+        scale.x * k,
+        scale.y * k
+    );
+};
+
 void Frame::reSize(sf::Vector2i new_size) {
     scale = sf::Vector2f(
         (new_size.x / size.x) * scale.x,

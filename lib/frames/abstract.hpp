@@ -18,13 +18,15 @@ public:
     Frame(sf::Vector2i size);
     Frame();
 
-    virtual void clear() = 0;
-    void display();
-    void setConfig(sf::Vector2i pos, sf::Vector2i size);
-    void setConfig(sf::Vector2i size);
     virtual void draw(sf::RectangleShape _shape) = 0;
     virtual void draw(sf::Text _shape) = 0;
     virtual void draw(sf::Sprite _shape) = 0;
+    virtual void clear() = 0;
+
+    void display();
+    void setConfig(sf::Vector2i pos, sf::Vector2i size);
+    void setConfig(sf::Vector2i size);
+    void scaleFrame(float k);
 
     sf::Sprite getSprite();
 };

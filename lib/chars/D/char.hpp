@@ -7,6 +7,7 @@ private:
 
 public:
     Char_D(int _x, int _y, bool playable);
+    Char_D(bool playable);
     ~Char_D();
 
     void scope(int _x, int _y);

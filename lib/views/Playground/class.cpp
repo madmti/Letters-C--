@@ -1,13 +1,23 @@
 #include "class.hpp"
 
-Playground::Playground(std::string _id, Config_type* _config, Texture_config* _texture) : View(_id), all_chars{ new Char_P(2, 5, true), new Char_C(5, 5, true), new Char_X(1, 1, true), new Char_D(3, 3, false) } {
+Playground::~Playground() {
+    int n_chars = all_chars.size();
+    for (int i = 0; i < n_chars; i++) {
+        delete all_chars.at(i);
+    };
+    all_chars.clear();
+    notPlayable_chars.clear();
+    playable_chars.clear();
+};
+
+Playground::Playground(std::string _id) : View(_id), all_chars{
+    new Char_P(true),
+    new Char_C(true),
+    new Char_X(true),
+    new Char_D(false)
+} {
     cameraMode = true;
     w = 0;
-    clock = 0;
-    delta_anim = 1;
-    config = _config;
-    textures = _texture;
-    tile_size = textures->tiles.tile_size;
     req_keys = std::vector<Key>{
         sf::Keyboard::W,
         sf::Keyboard::A,
@@ -19,53 +29,46 @@ Playground::Playground(std::string _id, Config_type* _config, Texture_config* _t
         sf::Keyboard::Q,
         sf::Keyboard::F
     };
-    getMap();
-    getPlayable();
-    getConfig();
+    getMap("land_0");
+    setupChars();
 };
 
-Playground::~Playground() {
-    int n_chars = all_chars.size();
-    for (int i = 0; i < n_chars; i++) {
-        delete all_chars.at(i);
-    };
-    all_chars.clear();
-    notPlayable_chars.clear();
-    playable_chars.clear();
-};
+void Playground::getMap(std::string map_name) {
+    map.load(map_name);
 
-void Playground::getConfig() {
-    for (int i = 0; i < all_chars.size(); i++) {
-        all_chars.at(i)->setMaps(&map, &scope_map);
-        all_chars.at(i)->place();
-    };
-};
-
-void Playground::getPlayable() {
-    for (int i = 0; i < all_chars.size(); i++)
-        if (all_chars.at(i)->isPlayable())
-            playable_chars.push_back(all_chars.at(i));
-        else notPlayable_chars.push_back(all_chars.at(i));
-};
-
-void Playground::getMap() {
-    map.assign(mapSize.y, std::vector<int>(mapSize.x, 0));
-    scope_map.assign(mapSize.y, std::vector<int>(mapSize.x, 0));
-
-    for (int y = 0; y < map.size(); y++) for (int x = 0; x < map.at(0).size(); x++) {
-        if (x == 0 || x == 31 || y == 0 || y == 17 || x % 4 == 0 && y % 4 == 0) map.at(y).at(x) = MAP_WALL_0;
-        else map.at(y).at(x) = MAP_FLOOR_0;
-
-        scope_map.at(y).at(x) = SCOPE_EMPTY;
-    };
+    tile_size = map.getTileSize();
 
     sf::Vector2i map_frame_size = sf::Vector2i(
-        (tile_size.x + 1) * map.at(0).size(),
-        (tile_size.y + 1) * map.size()
+        (tile_size.x + 1) * map.getDimX(),
+        (tile_size.y + 1) * map.getDimY()
     );
     map_frame.setConfig(sf::Vector2i(50, 50), map_frame_size);
-    map_frame.setSize(sf::Vector2i(1920, 1080));
+    map_frame.scaleFrame(2);
     char_frame.setConfig(sf::Vector2i(0, 0), map_frame_size);
+    char_frame.setPos(sf::Vector2i(5, -8));
+};
+
+void Playground::setupChars() {
+    int n_chars = all_chars.size();
+    std::vector<sf::Vector2i> spawnBlue = map.getSpawnBlue();
+    std::vector<sf::Vector2i> spawnRed = map.getSpawnRed();
+    for (int i = 0; i < n_chars; i++) {
+        Character* ch = all_chars.at(i);
+        if (ch->isPlayable()) {
+            if (spawnBlue.empty()) continue;
+            ch->setPos(spawnBlue.back());
+            spawnBlue.pop_back();
+            playable_chars.push_back(ch);
+        }
+        else {
+            if (spawnRed.empty()) continue;
+            ch->setPos(spawnRed.back());
+            spawnRed.pop_back();
+            notPlayable_chars.push_back(ch);
+        };
+        ch->setMap(&map);
+        ch->place();
+    };
 };
 
 void Playground::clear() {
@@ -76,7 +79,6 @@ void Playground::clear() {
 
 void Playground::display() {
     display_map();
-    //display_scope();
     display_player(notPlayable_chars, false);
     display_player(playable_chars, true);
     map_frame.draw(char_frame.getSprite());
@@ -139,7 +141,7 @@ void Playground::display_control_mode() {
     shade.r = 0;
     shade.g = 0;
     shade.b = 0;
-    shade.a = 100;
+    shade.a = 200;
 
     sf::RectangleShape back(sf::Vector2f(cameraMode ? 500 : 450, 50));
     back.setPosition(10, 10);
@@ -164,76 +166,76 @@ void Playground::display_player(std::vector<Character*> char_list, bool playable
             actual->getX() * (tile_size.x + 1),
             actual->getY() * (tile_size.y + 1)
         );
+        player.setOutlineThickness(2);
 
-        if (!playable) player.setFillColor(sf::Color::Green);
-        else player.setFillColor(config->theme.colors.base);
+        if (!playable) player.setFillColor(sf::Color::Red);
+        else if (i == w) {
+            sf::Color sel_col;
+            sel_col.b = 255;
+            sel_col.r = 0;
+            sel_col.g = 0;
+            sel_col.a = 200;
+            player.setOutlineColor(sel_col);
+        }
+        else player.setFillColor(sf::Color::Blue);
 
-        if (i == w && playable) {
-            sf::Color shade;
-            shade.b = 255;
-            shade.r = 0;
-            shade.g = 0;
-            shade.a = 150;
-            player.setOutlineThickness(2);
-            player.setOutlineColor(shade);
-        };
         char_frame.draw(player);
     };
 };
 
-void Playground::display_scope() {
-    int tilex = (config->window.width / camSize.x) - 1;
-    int tiley = (config->window.height / camSize.y);
-    int size = tilex < tiley ? tilex : tiley;
-    for (int camy = 0; camy < scope_map.size(); camy++) {
-        for (int camx = 0; camx < scope_map.at(0).size(); camx++) if (scope_map.at(camy).at(camx)) {
-            int TileValue = scope_map.at(camy).at(camx);
+void Playground::display_scope(int dx, int dy) {
+    int TileValue = map.get_scope(dx, dy);
+    if (TileValue == SCOPE_EMPTY) return;
 
-            sf::Color shade_blue;
-            shade_blue.r = 0;
-            shade_blue.g = 0;
-            shade_blue.b = 255;
-            shade_blue.a = 50;
+    sf::Color shade_blue;
+    shade_blue.r = 0;
+    shade_blue.g = 0;
+    shade_blue.b = 255;
+    shade_blue.a = 100;
 
-            sf::Color shade_white;
-            shade_white.r = 255;
-            shade_white.g = 255;
-            shade_white.b = 255;
-            shade_white.a = 50;
+    sf::Color shade_white;
+    shade_white.r = 255;
+    shade_white.g = 255;
+    shade_white.b = 255;
+    shade_white.a = 100;
 
-            sf::Color shade_red;
-            shade_red.r = 255;
-            shade_red.g = 0;
-            shade_red.b = 0;
-            shade_red.a = 50;
+    sf::Color shade_red;
+    shade_red.r = 255;
+    shade_red.g = 0;
+    shade_red.b = 0;
+    shade_red.a = 100;
 
-            sf::Color tile_color = TileValue == SCOPE_ONGO
-                ? shade_blue
-                : TileValue == SCOPE_ALLY
-                ? shade_white
-                : shade_red;
+    sf::Color tile_color = TileValue == SCOPE_ONGO
+        ? shade_blue
+        : TileValue == SCOPE_ALLY
+        ? shade_white
+        : shade_red;
 
-            sf::RectangleShape tile(sf::Vector2f(size, size));
-            tile.setFillColor(tile_color);
-            tile.setPosition(camx * size + camx + cam.x * size, camy * size + camy + cam.y * size);
-            frame.draw(tile);
-        };
-    };
+    sf::RectangleShape tile(sf::Vector2f(tile_size.x, tile_size.y));
+    tile.setFillColor(tile_color);
+    tile.setPosition(
+        dx * (tile_size.x + 1),
+        dy * (tile_size.y + 1)
+    );
+    tile.setOutlineThickness(1);
+
+    tile_color.a = 200;
+
+    tile.setOutlineColor(tile_color);
+    map_frame.draw(tile);
 };
 
 void Playground::display_map() {
-    for (int dy = 0; dy < map.size(); dy++) {
-        for (int dx = 0; dx < map.at(0).size(); dx++) {
-            int TileValue = map.at(dy).at(dx);
-            sf::Texture tile_texture = TileValue == MAP_WALL_0
-                ? textures->tiles.map_wall_0
-                : textures->tiles.map_floor_0;
+    for (int dy = 0; dy < map.getDimY(); dy++) {
+        for (int dx = 0; dx < map.getDimX(); dx++) {
+            MAP_VALUES TileValue = map.get_map(dx, dy);
 
-            sf::Sprite tile_sprite(tile_texture);
+            sf::Sprite tile_sprite = map.getTexture(TileValue);
             tile_sprite.setPosition(
                 dx * (tile_size.x + 1),
                 dy * (tile_size.y + 1)
             );
+
             sf::RectangleShape outline(sf::Vector2f(tile_size.x, tile_size.y));
             outline.setFillColor(sf::Color::Transparent);
             outline.setOutlineThickness(1);
@@ -244,6 +246,7 @@ void Playground::display_map() {
             );
             map_frame.draw(tile_sprite);
             map_frame.draw(outline);
+            display_scope(dx, dy);
 
         };
     };
@@ -269,8 +272,7 @@ ViewRequest Playground::capture(Key k) {
     }
     case sf::Keyboard::W: {
         if (cameraMode) {
-            cam.y++;
-            map_frame.move(0, 50);
+            map_frame.move(0, 100);
         }
         else if (playable_chars.at(w)->onMovementMode()) {
             playable_chars.at(w)->move(0, -1);
@@ -282,8 +284,7 @@ ViewRequest Playground::capture(Key k) {
     };
     case sf::Keyboard::S: {
         if (cameraMode) {
-            cam.y--;
-            map_frame.move(0, -50);
+            map_frame.move(0, -100);
         }
         else if (playable_chars.at(w)->onMovementMode()) {
             playable_chars.at(w)->move(0, 1);
@@ -295,8 +296,7 @@ ViewRequest Playground::capture(Key k) {
     };
     case sf::Keyboard::A: {
         if (cameraMode) {
-            cam.x++;
-            map_frame.move(50, 0);
+            map_frame.move(100, 0);
         }
         else if (playable_chars.at(w)->onMovementMode()) {
             playable_chars.at(w)->move(-1, 0);
@@ -308,8 +308,7 @@ ViewRequest Playground::capture(Key k) {
     };
     case sf::Keyboard::D: {
         if (cameraMode) {
-            cam.x--;
-            map_frame.move(-50, 0);
+            map_frame.move(-100, 0);
         }
         else if (playable_chars.at(w)->onMovementMode()) {
             playable_chars.at(w)->move(1, 0);
@@ -321,10 +320,6 @@ ViewRequest Playground::capture(Key k) {
     };
     case sf::Keyboard::Q: {
         if (cameraMode) {
-            camSize.x += 4;
-            camSize.y += 2;
-            cam.x += 2;
-            cam.y += 1;
             map_frame.zoomOut();
         }
         else {
@@ -334,13 +329,7 @@ ViewRequest Playground::capture(Key k) {
     };
     case sf::Keyboard::E: {
         if (cameraMode) {
-            if (camSize.x >= 5 && camSize.y >= 3) {
-                camSize.x -= 4;
-                camSize.y -= 2;
-                cam.x -= 2;
-                cam.y -= 1;
-                map_frame.zoomIn();
-            }
+            map_frame.zoomIn();
         }
         else {
             w = next_char_idx(w);
