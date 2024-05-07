@@ -18,11 +18,19 @@ private:
     sf::Vector2i tile_size;
 
     bool cameraMode;
-    
+
     int next_char_idx(int act);
     int prev_char_idx(int act);
+    int next_map_idx(int act);
+    int prev_map_idx(int act);
 
+    std::vector<std::string> maps_names;
+    int map_name_idx;
+    bool onSelectMapMenu;
 
+    void loadMap();
+    void searchMaps();
+    int findIdxCharsByPos(sf::Vector2i pos);
 public:
     Playground(std::string _id);
     ~Playground();
@@ -31,6 +39,9 @@ public:
     void setupChars();
 
     void display();
+
+    void display_select_menu();
+
     void display_map();
     void display_scope(int dx, int dy);
     void display_player(std::vector<Character*> char_list, bool playable);
@@ -40,6 +51,7 @@ public:
     void clear();
 
     ViewRequest capture(Key _k);
+    void capture_onPlay(Key _k);
 };
 
 #endif

@@ -1,10 +1,10 @@
 #include "char.hpp"
 
 
-Char_C::Char_C(int _x, int _y, bool playable) : Character(_x, _y, 'C', playable) {
+Char_C::Char_C(int _x, int _y, bool playable) : Character(_x, _y, 'C', C_DMG, C_MAX_LIFE, playable) {
     range = 5;
 };
-Char_C::Char_C(bool playable) : Character('C', playable) {
+Char_C::Char_C(bool playable) : Character('C', C_DMG, C_MAX_LIFE, playable) {
     range = 5;
 };
 
@@ -67,4 +67,8 @@ void Char_C::descope() {
 void Char_C::changeMovementMode() {
     movementMode = !movementMode;
     showScope();
+};
+Damage Char_C::doDamage() {
+    Damage temp(dmg, damageIsPercent);
+    return Damage(temp);
 };

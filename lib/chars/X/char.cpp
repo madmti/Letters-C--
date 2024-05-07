@@ -1,17 +1,19 @@
 #include "char.hpp"
 
 
-Char_X::Char_X(int _x, int _y, bool playable) : Character(_x, _y, 'X', playable), dirs{ sf::Vector2i(1,1), sf::Vector2i(-1, 1), sf::Vector2i(-1, -1), sf::Vector2i(1, -1) } {
+Char_X::Char_X(int _x, int _y, bool playable) : Character(_x, _y, 'X', X_DMG, X_MAX_LIFE, playable), dirs{ sf::Vector2i(1,1), sf::Vector2i(-1, 1), sf::Vector2i(-1, -1), sf::Vector2i(1, -1) } {
     idx_dirs = 0;
     range = 10;
     max_bounces = 3;
     bounces = 0;
+    hit = false;
 };
-Char_X::Char_X(bool playable) : Character('X', playable), dirs{ sf::Vector2i(1,1), sf::Vector2i(-1, 1), sf::Vector2i(-1, -1), sf::Vector2i(1, -1) } {
+Char_X::Char_X(bool playable) : Character('X', X_DMG, X_MAX_LIFE, playable), dirs{ sf::Vector2i(1,1), sf::Vector2i(-1, 1), sf::Vector2i(-1, -1), sf::Vector2i(1, -1) } {
     idx_dirs = 0;
     range = 10;
     max_bounces = 3;
     bounces = 0;
+    hit = false;
 };
 
 void Char_X::showScope() {
@@ -41,6 +43,7 @@ void Char_X::showScope() {
         else if (map_value == MAP_DUMMY_0 || map_value == MAP_ENEMY_0) {
             map->set_scope(delta, SCOPE_HIT);
             targets.push_back(sf::Vector2i(delta));
+            hit = true;
             break;
         };
 
@@ -74,6 +77,7 @@ void Char_X::scope(int _x, int _y) {
 void Char_X::descope() {
     if (!playable) return;
     bounces = 0;
+    hit = false;
     int n_targets = targets.size();
     for (int i = 0; i < n_targets; i++) {
         map->set_scope(targets.back(), SCOPE_EMPTY);
@@ -84,4 +88,13 @@ void Char_X::descope() {
 void Char_X::changeMovementMode() {
     movementMode = !movementMode;
     showScope();
+};
+
+Damage Char_X::doDamage() {
+    Damage temp(dmg, damageIsPercent);
+    if (!hit) return Damage(temp);
+    sf::Vector2i last_target = targets.back();
+    temp.targets.push_back(last_target);
+    return Damage(temp);
+
 };

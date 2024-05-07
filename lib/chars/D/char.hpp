@@ -14,6 +14,7 @@ public:
     void showScope();
     void descope();
     void changeMovementMode();
+    Damage doDamage();
 
 };
 

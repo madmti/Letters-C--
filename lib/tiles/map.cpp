@@ -27,7 +27,20 @@ bool Map::load() {
     return load(name);
 };
 
+void Map::clearAll() {
+    map_values.clear();
+    scope_values.clear();
+    dim = sf::Vector2i(0, 0);
+    int n_tex_mem = tex_mem.size();
+    for (int i = 0; i < n_tex_mem; i++) delete tex_mem.at(i);
+    tex_mem.clear();
+    spawnBlue.clear();
+    spawnRed.clear();
+    valid = false;
+};
+
 bool Map::load(std::string _name) {
+    clearAll();
     std::ifstream file("./static/maps/" + _name + "/map.txt");
     if (!file.is_open()) {
         valid = false;

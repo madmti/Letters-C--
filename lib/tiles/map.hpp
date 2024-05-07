@@ -52,6 +52,8 @@ private:
     MAP_VALUES buildToMap(BUILD_MAP_TILES build);
     void getLineMap(std::string& line, bool* dimX, int dy);
     void loadTextureFromLine(std::string& line);
+
+    void clearAll();
 public:
     Map();
     Map(std::string _name);

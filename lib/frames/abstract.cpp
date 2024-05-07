@@ -21,20 +21,18 @@ void Frame::display() { frame.display(); };
 
 void Frame::setConfig(sf::Vector2i _pos, sf::Vector2i _size) {
     pos = _pos;
-    if (!valid) {
-        frame.create(_size.x, _size.y);
-        size = _size;
-        valid = true;
-    }
-    else reSize(_size);
+    frame.create(_size.x, _size.y);
+    size = _size;
+    valid = true;
 };
 void Frame::setConfig(sf::Vector2i _size) {
-    if (!valid) {
-        frame.create(_size.x, _size.y);
-        size = _size;
-        valid = true;
-    }
-    else reSize(_size);
+    frame.create(_size.x, _size.y);
+    size = _size;
+    valid = true;
+};
+
+void Frame::setScale(float k) {
+    scale = sf::Vector2f(k, k);
 };
 
 void Frame::scaleFrame(float k) {

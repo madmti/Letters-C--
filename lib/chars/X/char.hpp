@@ -11,6 +11,7 @@ private:
     int range;
     int max_bounces;
     int bounces;
+    bool hit;
 
 public:
     Char_X(int _x, int _y, bool playable);
@@ -21,6 +22,8 @@ public:
     void showScope();
     void descope();
     void changeMovementMode();
+    Damage doDamage();
+
 };
 
 #endif

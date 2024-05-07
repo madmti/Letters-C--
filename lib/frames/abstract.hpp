@@ -27,6 +27,7 @@ public:
     void setConfig(sf::Vector2i pos, sf::Vector2i size);
     void setConfig(sf::Vector2i size);
     void scaleFrame(float k);
+    void setScale(float k);
 
     sf::Sprite getSprite();
 };
