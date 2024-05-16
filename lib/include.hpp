@@ -8,4 +8,7 @@
 #include <string>
 #include <vector>
 
+const std::string MAPS_DIR = "./static/maps/";
+const std::string TEXTURES_DIR = "./static/textures/";
+
 #endif

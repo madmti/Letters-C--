@@ -1,0 +1,23 @@
+* MAP
+- w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w
+- w f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f w
+- w f b b f f f f f f f f f f f f f f f f f w w f f f f f f f f f f f f f f f f f f f f w
+- w f b f f f w w f f f w w w w w w w f f f w w f f w w f f w w w f f w w w f f w w f f w
+- w f f f f f w w f f f w w w w w w w f f f w w f f w w f f w w w f f w w w f f w w f f w
+- w f f f f f w w f f f f f f f f f f f f f w w f f f f f f f f f f f f f f f f f f f f w
+- w f f f f f w w f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f w
+- w f w w w f w w w w w w w w w w w w w w f f f f w w w w w w w w w w w w w w f w w w f w
+- w f w w w f w w w w w w w w w w w w w w f f f f w w w w w w w w w w w w w w f w w w f w
+- w f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f w w f f f f f w
+- w f f f f f f f f f f f f f f f f f f f f w w f f f f f f f f f f f f f w w f f f f f w
+- w f f w w f f w w w f f w w w f f w w f f w w f f f w w w w w w w f f f w w f f f f f w
+- w f f w w f f w w w f f w w w f f w w f f w w f f f w w w w w w w f f f w w f f f r f w
+- w f f f f f f f f f f f f f f f f f f f f w w f f f f f f f f f f f f f f f f f r r f w
+- w f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f w
+- w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w w
+* TEXTURE
+$w:MAP_WALL_DUST
+$f:MAP_FLOOR_DUST
+$v:null
+$b:MAP_FLOOR_DUST
+$r:MAP_FLOOR_DUST

@@ -1,23 +1,14 @@
-#ifndef Char_P_h
-#define Char_P_h
+#ifndef Character_P_h
+#define Character_P_h
 #include "../abstract.hpp"
 
 class Char_P :public Character {
 private:
-    std::vector<sf::Vector2i> targets;
-    sf::Vector2i act_scope;
-    int range;
-    bool hit;
-public:
-    Char_P(int _x, int _y, bool playable);
-    Char_P(bool playable);
-    ~Char_P();
 
-    void scope(int _x, int _y);
-    void showScope();
-    void descope();
-    void changeMovementMode();
-    Damage doDamage();
+public:
+    Char_P( sf::Vector2i pos, int id, char type, int team, int life, int max_life, float damage );
+    Char_P();
+    ~Char_P();
 };
 
 #endif

@@ -10,8 +10,8 @@ r: Spawn Point Red
 - w f w
 - w w w
 * TEXTURE
-w: texture.png
-f: texture.png
-v: texture.png
-b: texture.png
-r: texture.png
+$w: texture.png
+$f: texture.png
+$v: texture.png
+$b: texture.png
+$r: texture.png

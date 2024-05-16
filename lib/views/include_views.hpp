@@ -3,6 +3,6 @@
 
 #include "./MainMenu/class.hpp"
 #include "./ConfigMenu/class.hpp"
-#include "./Playground/class.hpp"
+#include "./Training/class.hpp"
 
 #endif

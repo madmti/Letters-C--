@@ -9,11 +9,8 @@
 - w b f f f r w
 - w w w w w w w
 * TEXTURE
-w:MAP_WALL_0
-f:MAP_FLOOR_0
-v:MAP_VOID_0
-b:MAP_FLOOR_0
-r:MAP_FLOOR_0
-B:MAP_FLOOR_0
-R:MAP_FLOOR_0
-D:MAP_FLOOR_0
+$w:MAP_WALL_0
+$f:MAP_FLOOR_0
+$v:null
+$b:MAP_FLOOR_0
+$r:MAP_FLOOR_0

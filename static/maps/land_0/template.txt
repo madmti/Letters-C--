@@ -11,11 +11,8 @@
 - w f f f f f f f f f f f f f f f f f w v w f f f f f f f f f f f f f f f f f w
 - w w w w w w w w w w w w w w w w w w w v w w w w w w w w w w w w w w w w w w w
 * TEXTURE
-w:MAP_WALL_0
-f:MAP_FLOOR_0
-v:MAP_VOID_0
-b:MAP_FLOOR_0
-r:MAP_FLOOR_0
-B:MAP_FLOOR_0
-R:MAP_FLOOR_0
-D:MAP_FLOOR_0
+$w:MAP_WALL_LAND
+$f:MAP_FLOOR_LAND
+$v:null
+$b:MAP_FLOOR_LAND
+$r:MAP_FLOOR_LAND

@@ -3,3 +3,4 @@ build/
 log/
 config.json
 .vscode/
+.editorconfig

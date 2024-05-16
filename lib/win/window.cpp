@@ -116,7 +116,7 @@ void Window::getConfig() {
 void Window::getViews() {
     view_manager.insertView(new MainMenuView("#mainmenu"));
     view_manager.insertView(new ConfigMenu("#configmenu"));
-    view_manager.insertView(new Playground("#playground"));
+    view_manager.insertView(new Training("#training"));
 
 };
 

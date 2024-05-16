@@ -4,7 +4,7 @@ MainMenuView::MainMenuView(std::string _id) : View(_id) {
     opt = 0;
     optList = std::vector<Option>{
         Option("#onlinemenu", "online"),
-        Option("#playground", "playground"),
+        Option("#training", "training"),
         Option("#myteam", "my team"),
         Option("#configmenu", "configuration")
     };
